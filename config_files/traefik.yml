@@ -1,0 +1,40 @@
+entryPoints:
+
+  web:
+    address: ":80"
+    
+providers:
+  file:
+    filename: "test-service-conf.yml"
+    watch: true
+  consulCatalog:
+    refreshInterval: 10s
+    endpoint:
+      address: 127.0.0.1:8500
+    
+api:
+  insecure: true
+  dashboard: true
+  
+log:
+  level: INFO
+  filePath: logs/traefik.json.log
+#  format: json     
+  
+accessLog:
+  filePath: logs/access.json.log
+#  format: json
+
+metrics:
+  prometheus: {}
+
+#jaeger
+tracing:
+  jaeger:
+    samplingServerURL: http://localhost:5778/sampling
+    samplingType: const
+    samplingParam: 1.0
+    localAgentHostPort: 127.0.0.1:6831
+    gen128Bit: true
+    propagation: jaeger
+    traceContextHeaderName: uber-trace-id

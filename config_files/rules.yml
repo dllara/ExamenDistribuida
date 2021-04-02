@@ -1,0 +1,38 @@
+groups:
+- name: Alerta_instancia_caida
+  rules:
+  - alert: InstanciaCaida
+    # Condicion para la alerta
+    expr: up == 0
+    for: 18s
+    # Annotation - informacion adicional labels para almacenar mas infor
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} esta caida por mas de 13 segundos'
+    # Labels - etiquetas adicionales pueden agregarse
+    labels:
+      severity: 'critical'
+
+- name: cargaCPU
+  rules:
+  - alert: altaCargaCPU
+    expr: vendor_cpu_systemCpuLoad_percent > 0.15
+    for: 10m
+    labels:
+      severity: page
+    annotations:
+      title: 'Instance {{ $labels.instance }} CPU'
+      summary: altaCargaCPU
+
+- name: dnsFail
+  rules:
+  - alert: Fail_dns_discovery
+    expr: prometheus_sd_dns_lookup_failures_total > 1
+    for: 10m
+    labels:
+      severity: 'critical'
+    annotations:
+      title: 'error dns'
+      summary: Fail_dns_discovery
+
+
